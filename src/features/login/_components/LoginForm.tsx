@@ -10,27 +10,26 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import useRegister from "@/hooks/api/auth/useRegister";
+import useLogin from "@/hooks/api/auth/useLogin";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import Link from "next/link";
-import { RegisterSchema } from "../schema";
+import { LoginSchema } from "../schema";
 
-export function RegisterForm({
+export function LoginForm({
   className,
   ...props
 }: React.ComponentPropsWithoutRef<"div">) {
-  const { mutateAsync: register, isPending } = useRegister();
+  const { mutateAsync: login, isPending } = useLogin();
 
   const formik = useFormik({
     initialValues: {
-      name: "",
       email: "",
       password: "",
     },
-    validationSchema: RegisterSchema,
+    validationSchema: LoginSchema,
     onSubmit: async (values) => {
-      await register(values);
+      await login(values);
     },
   });
 
@@ -40,30 +39,14 @@ export function RegisterForm({
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Register</CardTitle>
+          <CardTitle className="text-2xl">Login</CardTitle>
           <CardDescription>
-            Enter your email below to create new account
+            Enter your email below to login to your account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={formik.handleSubmit}>
             <div className="flex flex-col gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  type="name"
-                  name="name"
-                  placeholder="your name"
-                  value={formik.values.name}
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  required
-                />
-                {!!formik.touched.name && !!formik.errors.name && (
-                  <p className="text-red-500">{formik.errors.name}</p>
-                )}
-              </div>
               <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
                 <Input
@@ -99,13 +82,13 @@ export function RegisterForm({
                 )}
               </div>
               <Button type="submit" className="w-full" disabled={isPending}>
-                {isPending ? "loading" : "register"}
+                {isPending ? "Loading" : "Login"}
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Already have an account?{" "}
-              <Link href="/login" className="underline underline-offset-4">
-                Login
+              Don&apos;t have an account?{" "}
+              <Link href="/register" className="underline underline-offset-4">
+                Register
               </Link>
             </div>
           </form>
