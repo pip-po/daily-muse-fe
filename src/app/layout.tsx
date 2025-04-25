@@ -1,18 +1,10 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import { dongle, poppins } from "@/assets/font";
+import Navbar from "@/components/Navbar";
 import { Toaster } from "@/components/ui/sonner";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import type { Metadata } from "next";
+import "./globals.css";
+import NuqsProvider from "@/providers/NuqsProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,10 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ReactQueryProvider>{children}</ReactQueryProvider>
+      <body className={` ${poppins.className} antialiased`}>
+        <ReactQueryProvider>
+          <NuqsProvider>
+            <Navbar />
+            {children}
+          </NuqsProvider>
+        </ReactQueryProvider>
         <Toaster richColors position="top-right" />
       </body>
     </html>
